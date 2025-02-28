@@ -164,11 +164,14 @@ Now that are data is "analytic ready", go ahead and read in your clean data and 
 read_csv("data_clean/buoy_final.csv")
 
 ggplot(data = buoy_final) + 
-  geom_smooth(mapping = aes(x = mm, y = atmp)) + 
+  geom_jitter(mapping = aes(x = factor(mm), y = atmp, color = factor(mm)), width = 0.05, alpha = 0.1) +
+  geom_smooth(mapping = aes(x = mm, y = atmp), color = "black") + 
   theme_light() + 
   labs(x = "Month in 2024",
        y = "Air Temperature (Celsius)",
-       title = "Monterey Bay Canyon Air Temperature in 2024")
+       title = "Monterey Bay Canyon Air Temperature in 2024") +
+  guides(color = "none") +
+  scale_color_viridis_d()
 
 ```
 
