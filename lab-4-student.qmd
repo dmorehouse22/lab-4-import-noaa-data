@@ -39,15 +39,16 @@ In the code chunk below, load in the packages necessary for your analysis. You s
 ```{r}
 #| label: setup
 
+library(tidyverse)
 ```
 
 # Part 2: Data Context
 
-Throughout the Monterey Bay there are various NOAA stations that capture data on wind speed, wave height, air temperature and many other data points. Data such as this can be used to predict weather or tidal event or used in conjunction with other data, such as population estimates of sardines or whale migration, to understand the ocean ecosystem.
+Throughout Monterey Bay, there are various NOAA stations that capture data on wind speed, wave height, air temperature and many other data points. Data such as this can be used to predict weather or tidal event or used in conjunction with other data, such as population estimates of sardines or whale migration, to understand the ocean ecosystem.
 
 ::::: {layout="[ 70, 30 ]"}
 ::: {#first-column}
-For this lab, we will focus on [Station 46092](https://www.ndbc.noaa.gov/station_history.php?station=46092), which is maintained by MBARI (Monterey Bay Aquarium Research Institute). which is on the outer edge of the Monterey Bay Canyon. Data is collected and stored hourly, but sometimes there are issues with censors not working or other events that lead to missing data.
+For this lab, we will focus on [Station 46092](https://www.ndbc.noaa.gov/station_history.php?station=46092), which is maintained by MBARI (Monterey Bay Aquarium Research Institute) on the outer edge of the Monterey Bay Canyon. Data is collected and stored hourly, but sometimes there are issues with censors not working or other events that lead to missing data.
 :::
 
 ::: {#second-column}
@@ -68,7 +69,9 @@ When you read in the data give it an appropriate name for what the data represen
 
 ```{r}
 #| label: load-data
+#| eval: false
 
+read_table("data_raw/buoy_2024.txt")
 ```
 
 Notice that the data is all read in as a character value and the first row contains information that is not data, but additional information about the variables: this is called a "comment" in the data.  
@@ -78,7 +81,9 @@ In your data, you will notice the `#` in front of `yr` in the second row. That i
 
 ```{r}
 #| label: load-data-comment
+#| eval: false
 
+buoy_2024 <- read_table("data_raw/buoy_2024.txt", comment = "#")
 ```
 
 
@@ -87,7 +92,9 @@ We want to use snake_case for our variable names. Use the `janitor` package to c
 
 ```{r}
 #| label: clean-names
+#| eval: false
 
+buoy_2024 <- janitor::clean_names(buoy_2024)
 ```
 
 ## Step 4: Write the Data Part 1
@@ -97,7 +104,9 @@ Write the data to a `csv` file called `buoy_update.csv`. Be sure to write it to 
 
 ```{r}
 #| label: write-data-part-1
+#| eval: false
 
+write_csv(buoy_2024, file = "data_raw/buoy_update.csv")
 ```
 
 
@@ -112,7 +121,11 @@ Remember that now we are reading back in a data file of type `csv`. Now when you
 
 ```{r}
 #| label: load-data-again
+#| eval: false
 
+buoy_update <- read_csv("data_raw/buoy_update.csv", 
+         col_types = list(.default = col_character()),
+         na = c("99","999"))
 ```
 
 This is great! But we created another problem. Now all of our numeric values are being treated like characters and we don't want that. There are a couple of ways to fix this. We can write and reread in the data setting the column types to `double` or we can use the `readr` parsing functions. 
@@ -121,8 +134,12 @@ Here is the code you can use to fix the data without exporting and importing aga
 
 ```{r}
 #| label: parse-double
-buoy_final <- your_file_name |> 
+#| eval: false
+
+buoy_final <- buoy_update |> 
   mutate(across(.cols = everything(), ~parse_double(.x)))
+
+write_csv(buoy_final, file = "data_clean/buoy_final.csv")
 ```
 
 
