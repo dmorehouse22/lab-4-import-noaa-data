@@ -1,3 +1,11 @@
+---
+title: "Lab 4: Importing NOAA Data"
+author: "Danny Morehouse"
+embed-resources: TRUE
+code-tools: TRUE
+echo: TRUE
+---
+
 # Part 1: Setup
 
 ## GitHub Workflow
@@ -153,6 +161,10 @@ Now that are data is "analytic ready", go ahead and read in your clean data and 
 ```{r}
 #| label: monterey-air-temp-viz
 
+read_csv("data_clean/buoy_final.csv")
+
+ggplot(data = buoy_final) + 
+  geom_smooth(mapping = aes(x = mm, y = atmp))
 
 ```
 
