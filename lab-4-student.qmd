@@ -161,7 +161,7 @@ Now that are data is "analytic ready", go ahead and read in your clean data and 
 ```{r}
 #| label: monterey-air-temp-viz
 
-read_csv("data_clean/buoy_final.csv")
+buoy_final <- read_csv("data_clean/buoy_final.csv")
 
 ggplot(data = buoy_final) + 
   geom_jitter(mapping = aes(x = factor(mm), y = atmp, color = factor(mm)), width = 0.05, alpha = 0.1) +
@@ -190,8 +190,15 @@ One fun source for data is [Tidy Tuesday](https://github.com/rfordatascience/tid
 
 >Insert your description and link to your source here. Identify 2-3 research questions you could try to answer with this data.  
 
+## Personal Data Set
 
+The data set I selected to clean and analyze is from my independent research project this past fall on thermal stress response in marine sponges. I observed the difference in thermal stress response between a species of sponge with an active chemical defense and one without. In this particular file, I observed the respiration rates of sponge fragments through incubation. 
 
+Some questions this data could answer may be...
+
+1. How does the oxygen per hour rates differ between the 2 sponge species in the ambient condition?
+
+2. How does the oxygen per hour rates differ between the 2 sponge species in the heated condition?
 
 # Lab 4 Submission
 
